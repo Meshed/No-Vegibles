@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
 	public float EnemySpawnDelay = 2.0f;
 	public Text Points;
 	public CanvasGroup GameOverCanvas;
+	public AudioClip DifficultyIncreased;
 
 	public enum LevelStates
 	{
@@ -23,6 +24,8 @@ public class LevelManager : MonoBehaviour
 	private int _points = 0;
 	private LevelStates _currentLevelState = LevelStates.Running;
 	private int _difficultyCounter = 0;
+	private GameObject _soundEffectsSource;
+	private AudioSource _audioSource;
 
 	public delegate void LevelManagerHandler(LevelStates levelState);
 	public static event LevelManagerHandler OnStateChange;
@@ -33,6 +36,11 @@ public class LevelManager : MonoBehaviour
 	{
 		_levelGenerator = GetComponent<LevelGenerator> ();
 		_enemySpawner = GetComponent<EnemySpawner> ();
+		_soundEffectsSource = GameObject.FindGameObjectWithTag ("Sound");
+		if (_soundEffectsSource != null)
+		{
+			_audioSource = _soundEffectsSource.GetComponent<AudioSource> ();
+		}
 	}
 
 	void OnEnable()
@@ -71,6 +79,14 @@ public class LevelManager : MonoBehaviour
 				}
 
 				Points.text = _points.ToString ();
+
+				if (_difficultyCounter >= 10)
+				{
+					EnemySpawnDelay -= Random.Range (0.10f, 0.25f);
+					PlaySoundEffect (DifficultyIncreased);
+					_difficultyCounter = 0;
+				}
+
 				break;
 			case LevelStates.GameOver:
 				DisplayGameOverPanel ();
@@ -97,6 +113,7 @@ public class LevelManager : MonoBehaviour
 	void OnEnemyDestroyed(int points)
 	{
 		_points += points;
+		_difficultyCounter++;
 	}
 
 	void SpawnEnemies()
@@ -114,5 +131,15 @@ public class LevelManager : MonoBehaviour
 	public void ReturnToMainMenu()
 	{
 		SceneManager.LoadScene ("MainMenu");
+	}
+
+	private void PlaySoundEffect(AudioClip soundEffect)
+	{
+		if (_audioSource != null)
+		{
+			_audioSource.PlayOneShot (soundEffect);
+		}
+		else
+			Debug.Log ("No sound audio source found!");
 	}
 }

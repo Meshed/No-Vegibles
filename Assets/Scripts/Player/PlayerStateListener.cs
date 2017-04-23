@@ -11,6 +11,8 @@ public class PlayerStateListener : MonoBehaviour
 	public float PlayerJumpForceHorizontal = 250f;
 	public float PlayerJumpForceVertical = 500f;
 	public float BulletFiringDelay = 1.0f;
+	public AudioClip PlayerFire;
+	public AudioClip PlayerHurt;
 
 	private PlayerStateController _playerStateController;
 	private PlayerStateController.PlayerStates _previousState;
@@ -19,11 +21,18 @@ public class PlayerStateListener : MonoBehaviour
 	private Rigidbody2D rigidBody;
 	private bool _lastMovedLeft = true;
 	private float _bulletFiringTimer = 0.0f;
+	private GameObject _soundEffectsSource;
+	private AudioSource _audioSource;
 
 	void Awake()
 	{
 		rigidBody = GetComponent<Rigidbody2D> ();
 		_playerStateController = GetComponent<PlayerStateController> ();
+		_soundEffectsSource = GameObject.FindGameObjectWithTag ("Sound");
+		if (_soundEffectsSource != null)
+		{
+			_audioSource = _soundEffectsSource.GetComponent<AudioSource> ();
+		}
 	}
 	void OnEnable()
 	{
@@ -142,10 +151,22 @@ public class PlayerStateListener : MonoBehaviour
 		GameObject bullet = GameObject.Instantiate (Bullet, bulletSpawnPoint, Quaternion.identity);
 		BulletController bulletController = bullet.GetComponent<BulletController> ();
 		bulletController.LaunchBullet (_lastMovedLeft);
+		PlaySoundEffect (PlayerFire);
 	}
 
 	public void HitByEnemy()
 	{
 		_playerStateController.PlayerHealth -= 20;
+		PlaySoundEffect (PlayerHurt);
+	}
+
+	private void PlaySoundEffect(AudioClip soundEffect)
+	{
+		if (_audioSource != null)
+		{
+			_audioSource.PlayOneShot (soundEffect);
+		}
+		else
+			Debug.Log ("No sound audio source found!");
 	}
 }

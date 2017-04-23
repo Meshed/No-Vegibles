@@ -7,8 +7,12 @@ public class EnemyController : MonoBehaviour
 	public int Health = 1;
 	public int Points = 1;
 	public float MoveSpeed = 1.0f;
+	public AudioClip EnemyHit;
+	public AudioClip EnemyDeath;
 
 	private bool _moveLeft = true;
+	private GameObject _soundEffectsSource;
+	private AudioSource _audioSource;
 
 	public delegate void EnemyControllerHandler (int points);
 	public static event EnemyControllerHandler OnEnemyDestroyed;
@@ -33,6 +37,12 @@ public class EnemyController : MonoBehaviour
 		}
 		else
 			_moveLeft = false;
+		
+		_soundEffectsSource = GameObject.FindGameObjectWithTag ("Sound");
+		if (_soundEffectsSource != null)
+		{
+			_audioSource = _soundEffectsSource.GetComponent<AudioSource> ();
+		}
 	}
 	
 	// Update is called once per frame
@@ -42,6 +52,7 @@ public class EnemyController : MonoBehaviour
 		{
 			Destroy (gameObject);
 			OnEnemyDestroyed (Points);
+			PlaySoundEffect (EnemyDeath);
 		}
 
 		if (_moveLeft)
@@ -65,5 +76,16 @@ public class EnemyController : MonoBehaviour
 	private void HitByBullet()
 	{
 		Health--;
+		PlaySoundEffect (EnemyHit);
+	}
+
+	private void PlaySoundEffect(AudioClip soundEffect)
+	{
+		if (_audioSource != null)
+		{
+			_audioSource.PlayOneShot (soundEffect);
+		}
+		else
+			Debug.Log ("No sound audio source found!");
 	}
 }

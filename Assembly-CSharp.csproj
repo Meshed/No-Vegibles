@@ -51,12 +51,15 @@
      <Compile Include="Assets\Scripts\Enemy\EnemyController.cs" />
      <Compile Include="Assets\Scripts\General\Camera2DFollow.cs" />
      <Compile Include="Assets\Scripts\General\DestroyOnCollision.cs" />
+     <Compile Include="Assets\Scripts\General\KeepAround.cs" />
      <Compile Include="Assets\Scripts\General\PlayerDefenseTrigger.cs" />
      <Compile Include="Assets\Scripts\Level\EnemySpawner.cs" />
      <Compile Include="Assets\Scripts\Level\LevelGenerator.cs" />
      <Compile Include="Assets\Scripts\Level\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Level\MapData.cs" />
-     <Compile Include="Assets\Scripts\MainMenuManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\CreditScreenManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\MainMenuManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerColliderListener.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStateListener.cs" />
