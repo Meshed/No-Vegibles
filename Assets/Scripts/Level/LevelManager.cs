@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
 	public GameObject Carrot;
 	public float EnemySpawnDelay = 2.0f;
 	public Text Points;
+	public Text GameOverPoints;
 	public CanvasGroup GameOverCanvas;
 	public AudioClip DifficultyIncreased;
 
@@ -79,6 +80,7 @@ public class LevelManager : MonoBehaviour
 				}
 
 				Points.text = _points.ToString ();
+				GameOverPoints.text = _points.ToString ();
 
 				if (_difficultyCounter >= 10)
 				{

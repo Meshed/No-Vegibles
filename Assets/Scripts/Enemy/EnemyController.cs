@@ -19,12 +19,12 @@ public class EnemyController : MonoBehaviour
 
 	void OnEnable()
 	{
-		BulletDamage.HitByBullet += HitByBullet;
+		//BulletDamage.HitByBullet += HitByBullet;
 		LevelManager.OnStateChange += OnLevelStateChange;
 	}
 	void OnDisable()
 	{
-		BulletDamage.HitByBullet -= HitByBullet;
+		//BulletDamage.HitByBullet -= HitByBullet;
 		LevelManager.OnStateChange -= OnLevelStateChange;
 	}
 
@@ -73,7 +73,7 @@ public class EnemyController : MonoBehaviour
 		}
 	}
 
-	private void HitByBullet()
+	public void HitByBullet()
 	{
 		Health--;
 		PlaySoundEffect (EnemyHit);
